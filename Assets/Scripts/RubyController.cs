@@ -4,15 +4,26 @@ using UnityEngine;
 
 public class RubyController : MonoBehaviour
 {
+    // health stats
+    [SerializeField] int maxHealth = 5;
+    int currentHealth;
+
     float horizontal;
     float vertical;
 
+    [SerializeField] float speed = 3.0f;
+
     Rigidbody2D rb;
+
+    // properties
+    public int Health { get => currentHealth; }
+    public int MaxHealth { get => maxHealth; }
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        currentHealth = maxHealth;
     }
 
     // Update is called once per frame
@@ -27,10 +38,16 @@ public class RubyController : MonoBehaviour
     {
         // calculate the new rigidbody position
         Vector2 position = rb.position;
-        position.x += 3.0f * horizontal * Time.fixedDeltaTime;
-        position.y += 3.0f * vertical * Time.fixedDeltaTime;
+        position.x += speed * horizontal * Time.fixedDeltaTime;
+        position.y += speed * vertical * Time.fixedDeltaTime;
 
         // apply the new rigidbody position to the gameobject
         rb.MovePosition(position);
+    }
+
+    public void ChangeHealth(int amount)
+    {
+        currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
+        Debug.Log($"Health: {currentHealth}/{maxHealth}");
     }
 }
