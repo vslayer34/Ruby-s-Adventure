@@ -63,8 +63,7 @@ public class EnemyController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        RubyController controller = collision.gameObject.GetComponent<RubyController>();
-
-        controller?.ChangeHealth(-1);
+        RubyController controller = collision?.gameObject.GetComponent<RubyController>();
+        controller.ChangeHealth(-1);
     }
 }
