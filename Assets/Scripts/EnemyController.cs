@@ -18,17 +18,15 @@ public class EnemyController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         timer = changeDirectionTime;
-        Debug.Log("start" + timer);
     }
 
     // Update is called once per frame
     void Update()
     {
         timer -= Time.deltaTime;
-        Debug.Log(timer);
+
         if (timer < 0)
         {
-            Debug.Log("Change Direction");
             direction *= -1;
             timer = changeDirectionTime;
         }
@@ -49,5 +47,13 @@ public class EnemyController : MonoBehaviour
         }
 
         rb.MovePosition(position);
+    }
+
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        RubyController controller = collision.gameObject.GetComponent<RubyController>();
+
+        controller?.ChangeHealth(-1);
     }
 }
