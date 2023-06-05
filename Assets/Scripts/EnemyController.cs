@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
+    [SerializeField] ParticleSystem smokeEffect;
     public float speed = 4.0f;
     Rigidbody2D rb;
 
@@ -91,5 +92,6 @@ public class EnemyController : MonoBehaviour
         isBroken = true;
         rb.simulated = false;
         animator.SetTrigger(isFixed);
+        smokeEffect.Stop();
     }
 }
