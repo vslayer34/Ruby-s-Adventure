@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class RubyController : MonoBehaviour
 {
+    [SerializeField] GameObject bulletPrefab;
+
     // health stats
     [SerializeField] int maxHealth = 5;
     int currentHealth;
@@ -26,7 +28,7 @@ public class RubyController : MonoBehaviour
     // Animator
     Animator animator;
     Vector2 lookDirection = new Vector2(1, 0);
-    int animatorSpeed, lookX, lookY, hit;
+    int animatorSpeed, lookX, lookY, hit, launch;
 
     // Start is called before the first frame update
     void Start()
@@ -40,11 +42,16 @@ public class RubyController : MonoBehaviour
         lookX = Animator.StringToHash("Look X");
         lookY = Animator.StringToHash("Look Y");
         hit = Animator.StringToHash("Hit");
+        launch = Animator.StringToHash("Launch");
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            Launch();
+        }
         // get user input
         horizontal = Input.GetAxis("Horizontal");
         vertical = Input.GetAxis("Vertical");
@@ -96,5 +103,14 @@ public class RubyController : MonoBehaviour
 
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
         Debug.Log($"Health: {currentHealth}/{maxHealth}");
+    }
+
+    void Launch()
+    {
+        GameObject projectileObject = Instantiate(bulletPrefab, rb.position + Vector2.up * 0.5f, Quaternion.identity);
+
+        Projectile projectileScript = projectileObject.GetComponent<Projectile>();
+        projectileScript.Launch(lookDirection, 300.0f);
+        animator.SetTrigger(launch);
     }
 }
