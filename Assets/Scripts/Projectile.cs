@@ -5,6 +5,8 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     Rigidbody2D rb;
+    [SerializeField] ParticleSystem robotHitEffect;
+    [SerializeField] SpriteRenderer spriteRenderer;
 
     void Awake()
     {
@@ -30,9 +32,12 @@ public class Projectile : MonoBehaviour
 
         if (enemyController != null)
         {
+            robotHitEffect.Play();
             enemyController.Fix();
         }
 
-        Destroy(gameObject);
+        rb.velocity = Vector2.zero;
+        spriteRenderer.enabled = false;
+        Destroy(gameObject, 0.6f);
     }
 }
