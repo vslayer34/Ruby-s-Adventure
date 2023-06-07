@@ -5,6 +5,7 @@ using UnityEngine;
 public class RubyController : MonoBehaviour
 {
     [SerializeField] GameObject bulletPrefab;
+    [SerializeField] ParticleSystem dizzyEffect;
 
     // health stats
     [SerializeField] int maxHealth = 5;
@@ -96,6 +97,7 @@ public class RubyController : MonoBehaviour
             if (isInvincible)
                 return;
 
+            dizzyEffect.Play();
             animator.SetTrigger(hit);
             isInvincible = true;
             invinciblityTimer = invincibilityDuration;
