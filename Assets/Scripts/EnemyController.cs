@@ -20,6 +20,9 @@ public class EnemyController : MonoBehaviour
     Animator animator;
     int moveX, moveY, isFixed;
 
+    // audio clips
+    [SerializeField] AudioClip[] robotHitRubyAudioClips;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -83,7 +86,7 @@ public class EnemyController : MonoBehaviour
 
         if (controller != null)
         {
-            controller.ChangeHealth(-1);
+            controller.ChangeHealth(-1, robotHitRubyAudioClips[Random.Range(0, 1)]);
         }
     }
 

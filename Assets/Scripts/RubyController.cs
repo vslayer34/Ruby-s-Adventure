@@ -22,6 +22,7 @@ public class RubyController : MonoBehaviour
     public int Health { get => currentHealth; }
     public int MaxHealth { get => maxHealth; }
 
+    // invisibility settings
     bool isInvincible;
     float invinciblityTimer;
     float invincibilityDuration = 2.0f;
@@ -30,6 +31,9 @@ public class RubyController : MonoBehaviour
     Animator animator;
     Vector2 lookDirection = new Vector2(1, 0);
     int animatorSpeed, lookX, lookY, hit, launch;
+
+    // play different interactable audio
+    AudioSource audioSource;
 
     // Start is called before the first frame update
     void Start()
@@ -44,6 +48,8 @@ public class RubyController : MonoBehaviour
         lookY = Animator.StringToHash("Look Y");
         hit = Animator.StringToHash("Hit");
         launch = Animator.StringToHash("Launch");
+
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -78,6 +84,8 @@ public class RubyController : MonoBehaviour
             }
         }
 
+
+        // interact with NPCs
         if (Input.GetKeyDown(KeyCode.X))
         {
             RaycastHit2D hit = Physics2D.Raycast(rb.position + Vector2.up * 0.2f, lookDirection, 1.5f, LayerMask.GetMask("NPC"));
@@ -105,7 +113,7 @@ public class RubyController : MonoBehaviour
         rb.MovePosition(position);
     }
 
-    public void ChangeHealth(int amount)
+    public void ChangeHealth(int amount, AudioClip audio = null)
     {
         if (amount < 0)
         {
@@ -114,6 +122,8 @@ public class RubyController : MonoBehaviour
 
             dizzyEffect.Play();
             animator.SetTrigger(hit);
+            if (audio != null)
+                PlaySound(audio);
             isInvincible = true;
             invinciblityTimer = invincibilityDuration;
         }
@@ -128,6 +138,16 @@ public class RubyController : MonoBehaviour
 
         Projectile projectileScript = projectileObject.GetComponent<Projectile>();
         projectileScript.Launch(lookDirection, 300.0f);
+        PlaySound(projectileScript.GetAudioClip());
         animator.SetTrigger(launch);
+    }
+
+
+    public void PlaySound(AudioClip clip)
+    {
+        audioSource.volume = 0.5f;
+
+        if (!audioSource.isPlaying)
+            audioSource.PlayOneShot(clip);
     }
 }

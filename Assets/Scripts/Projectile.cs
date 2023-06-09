@@ -7,6 +7,7 @@ public class Projectile : MonoBehaviour
     Rigidbody2D rb;
     [SerializeField] ParticleSystem robotHitEffect;
     [SerializeField] SpriteRenderer spriteRenderer;
+    [SerializeField] AudioClip flyingCogAudioClip;
 
     void Awake()
     {
@@ -40,4 +41,6 @@ public class Projectile : MonoBehaviour
         spriteRenderer.enabled = false;
         Destroy(gameObject, 0.6f);
     }
+
+    public AudioClip GetAudioClip() => flyingCogAudioClip;
 }
